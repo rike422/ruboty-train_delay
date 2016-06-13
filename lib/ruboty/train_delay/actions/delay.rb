@@ -68,7 +68,7 @@ module Ruboty
         def many_route(routes)
           <<-"EOS"
 絞り込めませんね。下のどれかでしょうか？
-#{routes.map { |route| "  * #{route[:name]}" }.join("\n") }}
+#{routes.map { |route| "  * #{route[:name]}" }.join("\n") }
           EOS
         end
       end
