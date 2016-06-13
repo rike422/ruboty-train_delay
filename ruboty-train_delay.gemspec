@@ -7,10 +7,10 @@ Gem::Specification.new do |spec|
   spec.name          = "ruboty-train_delay"
   spec.version       = Ruboty::TrainDelay::VERSION
   spec.authors       = ["akira.takahashi"]
-  spec.email         = ["rike2Takira@gmail.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
+  spec.email         = ["rike422@gmail.com"]
+  spec.summary       = %q{check train status}
+  spec.description   = %q{check train status}
+  spec.homepage      = "https://github.com/rike422/ruboty-train_delay"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
