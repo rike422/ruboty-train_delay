@@ -16,6 +16,27 @@ module Ruboty
 
     module Actions
       class Delay < Ruboty::Actions::Base
+        class << self
+          def train_list
+            @train_list ||= []
+          end
+
+          def create_train_list
+            Ruboty::TrainDelay::AREA_SET.values.each do |area|
+              Nokogiri::HTML(open(list_url(area)))
+              .css("#mdAreaMajorLine .elmTblLstLine > table tr a")
+              .map do |a|
+                data = { name: a.content, href: a.attributes["href"].value }
+                train_list.push data
+              end
+            end
+          end
+
+          def list_url(area_code)
+            "http://transit.loco.yahoo.co.jp/traininfo/area/#{area_code}/"
+          end
+        end
+
         def call
           list = delay_list
           return message.reply(found_route) if list.length == 0
@@ -28,17 +49,8 @@ module Ruboty
 
         private
 
-        def area
-          return "関東" unless message.match_data.names.include? "area"
-          message[:area]
-        end
-
         def route
           message[:route]
-        end
-
-        def area_code
-          Ruboty::TrainDelay::AREA_SET[area.to_sym]
         end
 
         def cause_delay(route)
@@ -47,9 +59,7 @@ module Ruboty
         end
 
         def delay_list
-          doc = Nokogiri::HTML(open(list_url))
-          .css("#mdAreaMajorLine .elmTblLstLine > table tr a")
-          .map { |a| { name: a.content, href: a.attributes["href"].value } }
+          self.class.train_list
           .select { |site| site[:name].include? route }
         end
 
@@ -59,10 +69,6 @@ module Ruboty
   #{list_url}
   から探してください。
           EOS
-        end
-
-        def list_url
-          "http://transit.loco.yahoo.co.jp/traininfo/area/#{area_code}/"
         end
 
         def many_route(routes)
@@ -75,3 +81,5 @@ module Ruboty
     end
   end
 end
+
+Ruboty::TrainDelay::Actions::Delay.create_train_list
