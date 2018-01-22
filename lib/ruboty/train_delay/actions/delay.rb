@@ -33,7 +33,7 @@ module Ruboty
           end
 
           def list_url(area_code)
-            "http://transit.loco.yahoo.co.jp/traininfo/area/#{area_code}/"
+            "https://transit.yahoo.co.jp/traininfo/area/#{area_code}/"
           end
         end
 
